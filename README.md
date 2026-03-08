@@ -37,16 +37,8 @@ git push origin Task№
 python
 df = pd.read_csv('data/stackoverflow_coursework_final.csv')
 print(df.shape)
-question_id	int	✅ Уникальный ID
-title	str	✅ Заголовок вопроса
-body	str	✅ Текст вопроса
-tags	str	✅ Теги ["python","pandas"]
-creation_date	int/timestamp	✅ Дата создания
-score	int	✅ Рейтинг вопроса
-answer_count	int	✅ Кол-во ответов
-view_count	int	✅ Просмотры
-favorite_count	int	✅ Избранное
-## Что есть в датасете
+
+## Что есть в датасете stackoverflow_coursework_final.csv
 |       Поле       |       Тип         |    Для чего            |
 |------------------|-------------------|------------------------|
 | `question_id`    | **int**           | Уникальный ID          |
