@@ -1,0 +1,24 @@
+# База данных
+psycopg2-binary==2.9.9
+python-dotenv==1.0.1
+
+# Данные
+pandas==2.2.2
+numpy==1.26.4
+
+# ML
+scikit-learn==1.5.0
+scipy==1.13.0
+
+# Визуализация
+matplotlib==3.9.0
+seaborn==0.13.2
+plotly==5.22.0
+
+# Jupyter
+jupyterlab==4.2.0
+ipykernel==6.29.4
+
+# Утилиты
+tqdm==4.66.4
+requests==2.32.3
