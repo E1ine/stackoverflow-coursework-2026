@@ -20,7 +20,7 @@ load_dotenv(ROOT / ".env")
 def get_connection():
     url = os.getenv("DATABASE_URL")
     if not url:
-        print("❌ DATABASE_URL не найден в .env")
+        print("DATABASE_URL не найден в .env")
         sys.exit(1)
     return psycopg2.connect(url)
 
@@ -56,9 +56,9 @@ def check(conn) -> None:
 
 if __name__ == "__main__":
     conn = get_connection()
-    print("📊 Проверка БД\n")
+    print("Проверка БД\n")
     try:
         check(conn)
-        print("\n✅ Всё в порядке")
+        print("\nВсё в порядке")
     finally:
         conn.close()

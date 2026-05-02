@@ -77,7 +77,7 @@ stackoverflow-analysis-2026/
 ## 🛠️ Стек технологий
 
 - **Язык:** Python 3.11+
-- **База данных:** PostgreSQL (Neon.tech — облачный хостинг, единая БД для команды)
+- **База данных:** PostgreSQL 
 - **Сбор данных:** Stack Exchange Data Explorer (SEDE)
 - **Обработка:** pandas, numpy
 - **ML / Анализ:** scikit-learn, scipy
