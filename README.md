@@ -17,8 +17,8 @@
 |---|--------|-----|-------|
 | 1 | Анализ трендов популярности технологий по тегам | Статистическая | Временные ряды, агрегация |
 | 2 | Кластеризация пользователей по паттернам активности | Исследовательская | K-Means, PCA |
-| 3 | Прогнозирование рейтинга (Score) вопроса | Исследовательская | Random Forest, Gradient Boosting |
-| 4 | Анализ времени ожидания ответа и факторов влияния | Статистическая | Корреляционный анализ, регрессия |
+| 3 | Предсказание получит ли вопрос принятый ответ | Исследовательская | Random Forest, Gradient Boosting |
+| 4 | Анализ времени ожидания ответа и факторов влияния | Статистическая | Корреляционный анализ |
 | 5 | Анализ временны́х паттернов активности («прокрастинация») | Статистическая | Временно́е распределение, heatmap |
 
 ---
@@ -26,7 +26,7 @@
 ## 🗂️ Структура репозитория
 
 ```
-stackoverflow-analysis-2026/
+stackoverflow-coursework-2026/
 │
 ├── data/
 │   ├── raw/                       # Сырые CSV из SEDE (в git не попадают)
@@ -34,12 +34,11 @@ stackoverflow-analysis-2026/
 │   └── README.md                  # Описание датасета и схема полей
 │
 ├── src/
-│   ├── collection/
-│   │   └── sede_queries/          # SQL-запросы для Stack Exchange Data Explorer
-│   │       ├── 01_questions.sql
-│   │       ├── 02_answers.sql
-│   │       ├── 03_users.sql
-│   │       └── README.md
+│   ├── sede_queries/              # SQL-запросы для Stack Exchange Data Explorer
+│   │   ├── 01_questions.sql
+│   │   ├── 02_answers.sql
+│   │   ├── 03_users.sql
+│   │   └── README.md
 │   │
 │   ├── storage/
 │   │   ├── schema.sql             # DDL-схема PostgreSQL
@@ -48,23 +47,18 @@ stackoverflow-analysis-2026/
 │   ├── processing/
 │   │   └── clean.py               # Проверка данных после загрузки
 │   │
-│   └── analytics/                 # Скрипты анализа (по одному на задачу)
+│   └── analytics/                 # Скрипты анализа
 │       ├── task1_trends.py
 │       ├── task2_clustering.py
-│       ├── task3_score_prediction.py
+│       ├── task3_accepted_prediction.py
 │       ├── task4_response_time.py
 │       └── task5_procrastination.py
 │
-├── notebooks/                     # Jupyter notebooks с визуализацией
-│   ├── 00_EDA.ipynb
-│   ├── 01_trends.ipynb
-│   ├── 02_clustering.ipynb
-│   ├── 03_score_prediction.ipynb
-│   ├── 04_response_time.ipynb
-│   └── 05_procrastination.ipynb
+├── notebooks/                     # Графики PNG (результаты анализа)
 │
 ├── docs/
-│   └── report.md                  # Черновик итогового отчёта
+│   ├── for_analysts.md            # Руководство для аналитиков
+│   └── for_developer.md          # Руководство для разработчика
 │
 ├── .env.example                   # Шаблон переменных окружения
 ├── .gitignore
@@ -77,11 +71,11 @@ stackoverflow-analysis-2026/
 ## 🛠️ Стек технологий
 
 - **Язык:** Python 3.11+
-- **База данных:** PostgreSQL 
+- **База данных:** PostgreSQL 16 (локально)
 - **Сбор данных:** Stack Exchange Data Explorer (SEDE)
 - **Обработка:** pandas, numpy
 - **ML / Анализ:** scikit-learn, scipy
-- **Визуализация:** matplotlib, seaborn, plotly
+- **Визуализация:** matplotlib, seaborn
 - **Контроль версий:** Git / GitHub
 
 ---
@@ -96,9 +90,9 @@ cd stackoverflow-coursework-2026
 # 2. Установить зависимости
 pip install -r requirements.txt
 
-# 3. Создать файл .env с данными подключения к БД
+# 3. Создать файл .env
 cp .env.example .env
-# Открой .env и вставь DATABASE_URL от Neon
+# Вставить DATABASE_URL своей локальной БД
 
 # 4. Создать схему БД
 python src/storage/loader.py --init
@@ -109,8 +103,8 @@ python src/storage/loader.py --load
 # 6. Проверить загрузку
 python src/processing/clean.py
 
-# 7. Открыть ноутбуки
-jupyter lab notebooks/
+# 7. Запустить аналитику
+python src/analytics/task1_trends.py
 ```
 
 ---
@@ -120,19 +114,20 @@ jupyter lab notebooks/
 Данные получены через **Stack Exchange Data Explorer (SEDE)**:  
 🔗 https://data.stackexchange.com/stackoverflow/query/new
 
-Период: 2021–2026 гг.  
+**Период:** Июнь 2024 — Апрель 2026
+
+| Таблица | Записей |
+|---------|---------|
+| questions | ~52 000 |
+| answers | ~47 000 |
+| users | ~50 000 |
+| tags | ~15 000 |
+
 Подробнее в [`data/README.md`](data/README.md)
 
 ---
 
-## 🌿 Ветки разработки
+## 📁 Документация
 
-| Ветка | Назначение |
-|-------|-----------|
-| `main` | Стабильная версия, только через PR |
-| `data-collection` | Сбор и загрузка данных |
-| `task1-trends` | Задача 1: тренды технологий |
-| `task2-clustering` | Задача 2: кластеризация |
-| `task3-prediction` | Задача 3: прогнозирование score |
-| `task4-response-time` | Задача 4: время ответа |
-| `task5-procrastination` | Задача 5: временны́е паттерны |
+- [`docs/for_analysts.md`](docs/for_analysts.md) — руководство для аналитиков: где брать графики
+- [`docs/for_developer.md`](docs/for_developer.md) — руководство для разработчика: быстрый старт, схема БД, как докачать данные, от куда брать дамп данных
