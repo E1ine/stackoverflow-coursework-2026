@@ -12,7 +12,7 @@
 
 | Файл | Сохранить как | Что внутри |
 |------|--------------|------------|
-| `01_questions.sql` | `data/raw/questions.csv` | 50к вопросов 2021–2026 |
+| `01_questions.sql` | `data/raw/questions.csv` | 50к вопросов 2024–2026 |
 | `02_answers.sql` | `data/raw/answers.csv` | Ответы к этим вопросам |
 | `03_users.sql` | `data/raw/users.csv` | Авторы вопросов |
 

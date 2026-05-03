@@ -23,6 +23,7 @@ from pathlib import Path
 
 import pandas as pd
 import psycopg2
+from psycopg2.extras import execute_values
 from dotenv import load_dotenv
 from tqdm import tqdm
 
@@ -77,7 +78,7 @@ def load_users(conn) -> None:
     ]]
 
     records = [
-        tuple(None if pd.isna(v) else v for v in row)
+        tuple(None if pd.isna(v) else (str(v).replace('%', '%%') if isinstance(v, str) else v) for v in row)
         for _, row in df.iterrows()
     ]
 
@@ -146,7 +147,7 @@ def load_questions(conn) -> None:
     df = df[[c for c in cols if c in df.columns]]
 
     records = [
-        tuple(None if pd.isna(v) else v for v in row)
+        tuple(None if pd.isna(v) else (str(v).replace('%', '%%') if isinstance(v, str) else v) for v in row)
         for _, row in df.iterrows()
     ]
 
@@ -253,21 +254,21 @@ def load_answers(conn) -> None:
         "OwnerUserId":  "owner_user_id",
         "IsAccepted":   "is_accepted",
     })
-
+    df = df[["answer_id", "question_id", "created_at", "score", "owner_user_id", "is_accepted"]]
     records = [
-        tuple(None if pd.isna(v) else v for v in row)
+        tuple(None if pd.isna(v) else (str(v).replace('%', '%%') if isinstance(v, str) else v) for v in row)
         for _, row in df.iterrows()
     ]
 
-    batch_size = 1000
+    batch_size = 5000
     for i in tqdm(range(0, len(records), batch_size), desc="answers"):
         batch = records[i:i + batch_size]
         c = get_connection()
         with c.cursor() as cur:
-            cur.executemany("""
+            execute_values(cur, """
                 INSERT INTO answers
                     (answer_id, question_id, created_at, score, owner_user_id, is_accepted)
-                VALUES (%s,%s,%s,%s,%s,%s)
+                VALUES %s
                 ON CONFLICT (answer_id) DO NOTHING
             """, batch)
             c.commit()
