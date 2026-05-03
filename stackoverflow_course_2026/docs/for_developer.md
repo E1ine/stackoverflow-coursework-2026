@@ -137,7 +137,7 @@ python src/storage/loader.py --load-tags
 Дубликаты удаляются автоматически через `ON CONFLICT DO NOTHING`.
 
 ---
-## Скачаешь дамп данных из бд с яндекс диска 
+## Скачаешь дамп данных бд из яндекс диска по ссылке ниже
 
 https://disk.yandex.ru/d/9yDL_agAox5DPg
 ---
@@ -153,8 +153,6 @@ DATABASE_URL=postgresql://postgres:пароль@localhost:5432/stackoverflow
 ```bash
 python src/processing/clean.py
 ```
-
----
 
 ## Ветки
 
