@@ -1,0 +1,24 @@
+# База данных
+psycopg2-binary
+python-dotenv
+sqlalchemy
+# Данные
+pandas
+numpy
+
+# ML
+scikit-learn
+scipy
+
+# Визуализация
+matplotlib
+seaborn
+plotly
+
+# Jupyter
+jupyterlab
+ipykernel
+
+# Утилиты
+tqdm
+requests
